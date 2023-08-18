@@ -75,6 +75,32 @@ void RenderScene(void){
     pObj = gluNewQuadric();
     gluQuadricNormals(pObj, GLU_SMOOTH);
 
+    // Hat
+    glColor3f(0.61f, 0.11f, 0.05f);
+    glPushMatrix();
+        glTranslatef(0.0f, 1.7f, 0.0f);
+        glRotated(90, 1, 0, 0);
+        gluCylinder(pObj, 0.20f, 0.18f, 0.35f, 26, 13);
+    glPopMatrix();
+        
+    glPushMatrix();
+       glTranslatef(0.0f, 1.35f, 0.0f);
+       glRotated(90, 1, 0, 0);
+       gluCylinder(pObj, 0.36f, 0.36f, 0.03f, 26, 13);
+    glPopMatrix();
+
+    // Nose
+    glColor3f(1.0f, 0.4f, 0.51f);
+    glPushMatrix();
+        glTranslatef(0.0f, 1.145f, 0.2f);
+        gluCylinder(pObj, 0.04f, 0.0f, 0.3f, 26, 13);
+    glPopMatrix();
+
+    // Arm
+
+    // Eyes
+
+    glColor3f(1.0f, 1.0f, 1.0f);
     // Head
     glPushMatrix();
         glTranslatef(0.0f, 1.145f, 0.0f);
