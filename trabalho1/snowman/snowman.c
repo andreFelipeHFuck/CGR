@@ -97,8 +97,78 @@ void RenderScene(void){
     glPopMatrix();
 
     // Arm
+    // Arm right
+    glPushMatrix();
+       glTranslatef(0.2f, 0.75f, 0.0f);
+       glRotated(90, 0, 1, 0);
+       glRotated(-30, 1, 0, 0);
+       gluCylinder(pObj, 0.04f, 0.0f, 0.8f, 26, 13);
+    glPopMatrix();
+
+    glPushMatrix();
+       glTranslatef(-0.2f, 0.75f, 0.0f);
+       glRotated(-90, 0, 1, 0);
+       glRotated(-30, 1, 0, 0);
+       gluCylinder(pObj, 0.04f, 0.0f, 0.8f, 26, 13);
+    glPopMatrix();
 
     // Eyes
+    glColor3f(0.0f, 0.0f, 0.0f);
+    // Eye left
+    glPushMatrix();
+        glTranslatef(-0.10f, 1.23f, 0.26f);
+        gluDisk(pObj, 0.0f, 0.04f, 26, 13);
+    glPopMatrix();
+
+    // Eye right
+    glPushMatrix();
+        glTranslatef(0.10f, 1.23f, 0.26f);
+        gluDisk(pObj, 0.0f, 0.04f, 26, 13);
+    glPopMatrix();
+
+    // Smile
+    glPushMatrix();
+        glTranslatef(0.0f, 1.03f, 0.29f);
+        gluDisk(pObj, 0.0f, 0.02f, 26, 13);
+    glPopMatrix();
+
+    glPushMatrix();
+        glTranslatef(-0.05f, 1.05f, 0.29f);
+        gluDisk(pObj, 0.0f, 0.02f, 26, 13);
+    glPopMatrix();
+
+    glPushMatrix();
+        glTranslatef(0.05f, 1.05f, 0.29f);
+        gluDisk(pObj, 0.0f, 0.02f, 26, 13);
+    glPopMatrix();
+
+    glPushMatrix();
+        glTranslatef(-0.09f, 1.08f, 0.29f);
+        gluDisk(pObj, 0.0f, 0.02f, 26, 13);
+    glPopMatrix();
+
+    glPushMatrix();
+        glTranslatef(0.09f, 1.08f, 0.29f);
+        gluDisk(pObj, 0.0f, 0.02f, 26, 13);
+    glPopMatrix();
+
+    // Button
+    glPushMatrix();
+        glTranslatef(0.0f, 0.7f, 0.35f);
+        gluDisk(pObj, 0.0f, 0.04f, 26, 13);
+    glPopMatrix();
+
+    glPushMatrix();
+        glTranslatef(0.0f, 0.85f, 0.30f);
+        gluDisk(pObj, 0.0f, 0.04f, 26, 13);
+    glPopMatrix();
+
+    glPushMatrix();
+        glTranslatef(0.0f, 0.55f, 0.35f);
+        gluDisk(pObj, 0.0f, 0.04f, 26, 13);
+    glPopMatrix();
+
+
 
     glColor3f(1.0f, 1.0f, 1.0f);
     // Head
