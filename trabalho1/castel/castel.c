@@ -71,6 +71,35 @@ void SpecialKeys(int key, int x, int y){
 }
 
 // Tower
+void RenderTower(GLUquadricObj *pObj, GLfloat x, GLfloat z){
+    glColor3f(0.0f, 0.0f, 0.0f);
+    glPushMatrix();
+        glTranslatef(x, 1.7, z);
+        glRotatef(-90, 1.0f, 0.0f, 0.0f);
+        gluCylinder(pObj, 1.3f, 0.0f, 1.3f, 26, 13);
+    glPopMatrix();
+
+    glColor3f(1.0f, 1.0f, 1.0f); 
+    glPushMatrix();
+        glTranslatef(x, 1.7f, z);
+        glRotatef(90, 1.0f, 0.0f, 0.0f);
+        gluCylinder(pObj, 1.3f, 1.3f, 0.7f, 26, 13);
+    glPopMatrix();
+
+    glPushMatrix();
+        glTranslatef(x, 1.0f, z);
+        glRotatef(90, 1.0f, 0.0f, 0.0f);
+        gluDisk(pObj, 0.0f, 1.3f, 26, 13);
+    glPopMatrix();
+
+    glPushMatrix();
+        glTranslatef(x, 1.0f, z);
+        glRotatef(90, 1.0f, 0.0f, 0.0f);
+        gluCylinder(pObj, 1.0f, 1.0f, 1.7f, 26, 13);
+    glPopMatrix();
+}
+
+// Wall
 
 
 // Scene
@@ -89,32 +118,32 @@ void RenderScene(void){
     pObj = gluNewQuadric();  
 	gluQuadricNormals(pObj, GLU_SMOOTH);  
 
-    // Tower
-    glColor3f(0.0f, 0.0f, 0.0f);
-    glPushMatrix();
-        glTranslatef(0.0f, 1.7, 0.0f);
-        glRotatef(-90, 1.0f, 0.0f, 0.0f);
-        gluCylinder(pObj, 1.3f, 0.0f, 1.3f, 26, 13);
-    glPopMatrix();
+    RenderTower(pObj, 0.0f, 0.0f);
 
-    glColor3f(1.0f, 1.0f, 1.0f); 
-    glPushMatrix();
-        glTranslatef(0.0f, 1.7f, 0.0f);
-        glRotatef(90, 1.0f, 0.0f, 0.0f);
-        gluCylinder(pObj, 1.3f, 1.3f, 0.7f, 26, 13);
-    glPopMatrix();
+    glColor3f(1,0, 0);
+    glBegin(GL_QUADS);
+        glVertex3f(0.5, 0.5, 0.5);    
+        glVertex3f(0.5, -0.7, 0.5);    
+        glVertex3f(3.5, -0.7, 0.5);  
+        glVertex3f(3.5, 0.5, 0.5); 
+    glEnd();
 
-    glPushMatrix();
-        glTranslatef(0.0f, 1.0f, 0.0f);
-        glRotatef(90, 1.0f, 0.0f, 0.0f);
-        gluDisk(pObj, 0.0f, 1.3f, 26, 13);
-    glPopMatrix();
+    glBegin(GL_QUADS);
+        glVertex3f(0.5, 0.5, -0.5);    
+        glVertex3f(0.5, -0.7, -0.5);    
+        glVertex3f(3.5, -0.7, -0.5);  
+        glVertex3f(3.5, 0.5, -0.5); 
+    glEnd();
 
-    glPushMatrix();
-        glTranslatef(0.0f, 1.0f, 0.0f);
-        glRotatef(90, 1.0f, 0.0f, 0.0f);
-        gluCylinder(pObj, 1.0f, 1.0f, 1.7f, 26, 13);
-    glPopMatrix();
+    // Roof
+    glBegin(GL_QUADS);
+        glVertex3f(0.5, 0.5, 0.5);    
+        glVertex3f(0.5, 0.5, -0.7);    
+        glVertex3f(3.5, 0.5, -0.7);  
+        glVertex3f(3.5, 0.5, 0.5); 
+    glEnd();
+
+    RenderTower(pObj, 3.5f, 0.0f);
 
     glPopMatrix();
     // Estudar
