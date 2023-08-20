@@ -68,7 +68,6 @@ void RenderScene(void){
 
     glPushMatrix();
 
-    // ESTUDAR
     glTranslatef(0.0f, -1.0f, -5.0f);  
 	glRotatef(yRot, 0.0f, 1.0f, 0.0f);  
 
@@ -76,19 +75,27 @@ void RenderScene(void){
     gluQuadricNormals(pObj, GLU_SMOOTH);
 
     // Hat
-    glColor3f(0.61f, 0.11f, 0.05f);
+    glColor3f(0.11f, 0.11f, 0.11f);
     glPushMatrix();
-        glTranslatef(0.0f, 1.7f, 0.0f);
+        glTranslatef(0.0f, 1.7f, 0.0f); 
         glRotated(90, 1, 0, 0);
         gluCylinder(pObj, 0.20f, 0.18f, 0.35f, 26, 13);
     glPopMatrix();
-        
+
     glPushMatrix();
        glTranslatef(0.0f, 1.35f, 0.0f);
        glRotated(90, 1, 0, 0);
        gluCylinder(pObj, 0.36f, 0.36f, 0.03f, 26, 13);
     glPopMatrix();
 
+    // Band
+    glColor3f(0.859f, 0.125, 0.125);
+    glPushMatrix();
+        glTranslatef(0.0f, 1.42f, 0.0f); 
+        glRotated(90, 1, 0, 0);
+        gluCylinder(pObj, 0.20f, 0.20f, 0.08f, 26, 13);
+    glPopMatrix();
+        
     // Nose
     glColor3f(1.0f, 0.4f, 0.51f);
     glPushMatrix();
@@ -105,6 +112,22 @@ void RenderScene(void){
        gluCylinder(pObj, 0.04f, 0.0f, 0.8f, 26, 13);
     glPopMatrix();
 
+    // Finger right
+    glPushMatrix();
+       glTranslatef(0.7f, 1.05f, 0.0f);
+       glRotated(90, 0, 1, 0);
+       gluCylinder(pObj, 0.02f, 0.0f, 0.2f, 26, 13);
+    glPopMatrix();
+
+    // Finger left
+     glPushMatrix();
+       glTranslatef(0.7f, 1.03f, 0.0f);
+       glRotated(90, 0, 1, 0);
+       glRotated(-60, 1, 0, 0);
+       gluCylinder(pObj, 0.02f, 0.0f, 0.2f, 26, 13);
+    glPopMatrix();
+
+    // Arm left
     glPushMatrix();
        glTranslatef(-0.2f, 0.75f, 0.0f);
        glRotated(-90, 0, 1, 0);
@@ -112,65 +135,90 @@ void RenderScene(void){
        gluCylinder(pObj, 0.04f, 0.0f, 0.8f, 26, 13);
     glPopMatrix();
 
+    // Finger right
+    glPushMatrix();
+       glTranslatef(-0.7f, 1.05f, 0.0f);
+       glRotated(-90, 0, 1, 0);
+       gluCylinder(pObj, 0.02f, 0.0f, 0.2f, 26, 13);
+    glPopMatrix();
+
+    // Finger left
+     glPushMatrix();
+       glTranslatef(-0.7f, 1.03f, 0.0f);
+       glRotated(-90, 0, 1, 0);
+       glRotated(-60, 1, 0, 0);
+       gluCylinder(pObj, 0.02f, 0.0f, 0.2f, 26, 13);
+    glPopMatrix();
+
     // Eyes
     glColor3f(0.0f, 0.0f, 0.0f);
     // Eye left
     glPushMatrix();
-        glTranslatef(-0.10f, 1.23f, 0.26f);
+        glTranslatef(-0.10f, 1.23f, 0.25f);
+        glRotated(-15, 1, 0, 0);
         gluDisk(pObj, 0.0f, 0.04f, 26, 13);
     glPopMatrix();
 
     // Eye right
     glPushMatrix();
-        glTranslatef(0.10f, 1.23f, 0.26f);
+        glTranslatef(0.10f, 1.23f, 0.25f);
+        glRotated(-15, 1, 0, 0);
         gluDisk(pObj, 0.0f, 0.04f, 26, 13);
     glPopMatrix();
 
     // Smile
     glPushMatrix();
-        glTranslatef(0.0f, 1.03f, 0.29f);
+        glTranslatef(0.0f, 1.03f, 0.25f);
+        glRotated(15, 1, 0, 0);
         gluDisk(pObj, 0.0f, 0.02f, 26, 13);
     glPopMatrix();
 
     glPushMatrix();
-        glTranslatef(-0.05f, 1.05f, 0.29f);
+        glTranslatef(-0.05f, 1.05f, 0.25f);
+        glRotated(15, 1, 0, 0);
         gluDisk(pObj, 0.0f, 0.02f, 26, 13);
     glPopMatrix();
 
     glPushMatrix();
-        glTranslatef(0.05f, 1.05f, 0.29f);
+        glTranslatef(0.05f, 1.05f, 0.25f);
+        glRotated(15, 1, 0, 0);
         gluDisk(pObj, 0.0f, 0.02f, 26, 13);
     glPopMatrix();
 
     glPushMatrix();
-        glTranslatef(-0.09f, 1.08f, 0.29f);
+        glTranslatef(-0.09f, 1.08f, 0.25f);
+        glRotated(15, 1, 0, 0);
         gluDisk(pObj, 0.0f, 0.02f, 26, 13);
     glPopMatrix();
 
     glPushMatrix();
-        glTranslatef(0.09f, 1.08f, 0.29f);
+        glTranslatef(0.09f, 1.08f, 0.25f);
+        glRotated(15, 1, 0, 0);
         gluDisk(pObj, 0.0f, 0.02f, 26, 13);
     glPopMatrix();
 
     // Button
     glPushMatrix();
-        glTranslatef(0.0f, 0.7f, 0.35f);
+        glTranslatef(0.0f, 0.7f, 0.345f);
+        glRotated(-12, 1, 0, 0);
         gluDisk(pObj, 0.0f, 0.04f, 26, 13);
     glPopMatrix();
 
     glPushMatrix();
-        glTranslatef(0.0f, 0.85f, 0.30f);
+        glTranslatef(0.0f, 0.85f, 0.267f);
+        glRotated(-30, 1, 0, 0);
         gluDisk(pObj, 0.0f, 0.04f, 26, 13);
     glPopMatrix();
 
     glPushMatrix();
         glTranslatef(0.0f, 0.55f, 0.35f);
+        glRotated(15, 1, 0, 0);
         gluDisk(pObj, 0.0f, 0.04f, 26, 13);
     glPopMatrix();
 
 
 
-    glColor3f(1.0f, 1.0f, 1.0f);
+    glColor3f(1.0f, 0.988f, 0.988f);
     // Head
     glPushMatrix();
         glTranslatef(0.0f, 1.145f, 0.0f);
