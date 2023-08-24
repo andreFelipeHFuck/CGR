@@ -1,4 +1,4 @@
-#include <GL/glut.h>
+#include "castel.h"
 
 static GLfloat yRot = 0.0f;
 static GLfloat zRot = 0.0f;
@@ -71,36 +71,74 @@ void SpecialKeys(int key, int x, int y){
 }
 
 // Tower
-void RenderTower(GLUquadricObj *pObj, GLfloat x, GLfloat z){
+void DrawTower(GLUquadricObj *pObj, Point3D point){
     glColor3f(0.0f, 0.0f, 0.0f);
     glPushMatrix();
-        glTranslatef(x, 1.7, z);
+        glTranslatef(point.x, 1.7f, point.z);
         glRotatef(-90, 1.0f, 0.0f, 0.0f);
         gluCylinder(pObj, 1.3f, 0.0f, 1.3f, 26, 13);
     glPopMatrix();
 
+
     glColor3f(1.0f, 1.0f, 1.0f); 
     glPushMatrix();
-        glTranslatef(x, 1.7f, z);
+        glTranslatef(point.x, 1.7f, point.z);
         glRotatef(90, 1.0f, 0.0f, 0.0f);
         gluCylinder(pObj, 1.3f, 1.3f, 0.7f, 26, 13);
     glPopMatrix();
 
     glPushMatrix();
-        glTranslatef(x, 1.0f, z);
+        glTranslatef(point.x, 1.0f, point.z);
         glRotatef(90, 1.0f, 0.0f, 0.0f);
         gluDisk(pObj, 0.0f, 1.3f, 26, 13);
     glPopMatrix();
 
     glPushMatrix();
-        glTranslatef(x, 1.0f, z);
+        glTranslatef(point.x, 1.0f, point.z);
         glRotatef(90, 1.0f, 0.0f, 0.0f);
         gluCylinder(pObj, 1.0f, 1.0f, 1.7f, 26, 13);
     glPopMatrix();
 }
 
 // Wall
+void DrawParallelepiped(Point3D point1, Point3D point2){
+    glColor3f(1.0f, 1.0f, 1.0f); 
+    glBegin(GL_QUADS);
+    // FRONT
+	glVertex3f(point1.x, point1.y, point2.z);
+	glVertex3f(point2.x, point1.y, point2.z);
+	glVertex3f(point2.x, point2.y, point2.z);
+	glVertex3f(point1.x, point2.y, point2.z);
+	// BACK
+	glVertex3f(point1.x, point1.y, point1.z);
+	glVertex3f(point1.x, point2.y, point1.z);
+	glVertex3f(point2.x, point2.y, point1.z);
+	glVertex3f(point2.x, point1.y, point1.z);
 
+	// LEFT
+	glVertex3f(point1.x, point1.y, point2.z);
+	glVertex3f(point1.x, point2.y, point2.z);
+	glVertex3f(point1.x, point2.y, point1.z);
+	glVertex3f(point1.x, point1.y, point1.z);
+	// RIGHT
+	glVertex3f(point2.x, point1.y, point1.z);
+	glVertex3f(point2.x, point2.y, point1.z);
+	glVertex3f(point2.x, point2.y, point2.z);
+	glVertex3f(point2.x, point1.y, point2.z);
+
+	// TOP
+	glVertex3f(point1.x, point2.y, point2.z);
+	glVertex3f(point2.x, point2.y, point2.z);
+	glVertex3f(point2.x, point2.y, point1.z);
+	glVertex3f(point1.x, point2.y, point1.z);
+
+	// BOTTOM
+	glVertex3f(point1.x, point1.y, point2.z);
+	glVertex3f(point1.x, point1.y, point1.z);
+	glVertex3f(point2.x, point1.y, point1.z);
+	glVertex3f(point2.x, point1.y, point2.z);
+    glEnd();
+}
 
 // Scene
 void RenderScene(void){
@@ -118,33 +156,59 @@ void RenderScene(void){
     pObj = gluNewQuadric();  
 	gluQuadricNormals(pObj, GLU_SMOOTH);  
 
-    RenderTower(pObj, 0.0f, 0.0f);
+    Point3D pointTower1;
+    pointTower1.x = -2.3f;
+    pointTower1.y = 0.0f;
+    pointTower1.z = 0.0f;
+    DrawTower(pObj, pointTower1);
+    
+    Point3D pointWallA1;
+    pointWallA1.x = -1.5f;
+    pointWallA1.y = -0.7f;
+    pointWallA1.z = -0.5f;
+    
+    Point3D pointWallA2;
+    pointWallA2.x = 1.5f;
+    pointWallA2.y = 0.3f;
+    pointWallA2.z = 0.5f;
 
-    glColor3f(1,0, 0);
-    glBegin(GL_QUADS);
-        glVertex3f(0.5, 0.5, 0.5);    
-        glVertex3f(0.5, -0.7, 0.5);    
-        glVertex3f(3.5, -0.7, 0.5);  
-        glVertex3f(3.5, 0.5, 0.5); 
-    glEnd();
+    DrawParallelepiped(pointWallA1, pointWallA2);
 
-    glBegin(GL_QUADS);
-        glVertex3f(0.5, 0.5, -0.5);    
-        glVertex3f(0.5, -0.7, -0.5);    
-        glVertex3f(3.5, -0.7, -0.5);  
-        glVertex3f(3.5, 0.5, -0.5); 
-    glEnd();
+    Point3D pointTower2;
+    pointTower2.x = 2.3f;
+    pointTower2.y = 0.0f;
+    pointTower2.z = 0.0f;
+    DrawTower(pObj, pointTower2);
 
-    // Roof
-    glBegin(GL_QUADS);
-        glVertex3f(0.5, 0.5, 0.5);    
-        glVertex3f(0.5, 0.5, -0.7);    
-        glVertex3f(3.5, 0.5, -0.7);  
-        glVertex3f(3.5, 0.5, 0.5); 
-    glEnd();
+    Point3D pointWallB1;
+    pointWallB1.x = 1.8f;
+    pointWallB1.y = -0.7f;
+    pointWallB1.z = 0.8f;
+    
+    Point3D pointWallB2;
+    pointWallB2.x = 3.0f;
+    pointWallB2.y = 0.3f;
+    pointWallB2.z = 3.8f;
+    DrawParallelepiped(pointWallB1, pointWallB2);
 
-    RenderTower(pObj, 3.5f, 0.0f);
+    Point3D pointTower3;
+    pointTower3.x = 2.3f;
+    pointTower3.y = 0.0f;
+    pointTower3.z = 4.0f;
+    DrawTower(pObj, pointTower3);
 
+    Point3D pointWallC1;
+    pointWallC1.x = -1.5f;
+    pointWallC1.y = -0.7f;
+    pointWallC1.z = 3.3f;
+    
+    Point3D pointWallC2;
+    pointWallC2.x = 1.5f;
+    pointWallC2.y = 0.3f;
+    pointWallC2.z = 4.3f;
+
+    DrawParallelepiped(pointWallC1, pointWallC2);
+        
     glPopMatrix();
     // Estudar
     glutSwapBuffers();
