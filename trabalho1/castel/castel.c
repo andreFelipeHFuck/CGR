@@ -70,39 +70,9 @@ void SpecialKeys(int key, int x, int y){
     glutPostRedisplay();  
 }
 
-// Tower
-void DrawTower(GLUquadricObj *pObj, Point3D point){
-    glColor3f(0.0f, 0.0f, 0.0f);
-    glPushMatrix();
-        glTranslatef(point.x, 1.7f, point.z);
-        glRotatef(-90, 1.0f, 0.0f, 0.0f);
-        gluCylinder(pObj, 1.3f, 0.0f, 1.3f, 26, 13);
-    glPopMatrix();
 
-
-    glColor3f(1.0f, 1.0f, 1.0f); 
-    glPushMatrix();
-        glTranslatef(point.x, 1.7f, point.z);
-        glRotatef(90, 1.0f, 0.0f, 0.0f);
-        gluCylinder(pObj, 1.3f, 1.3f, 0.7f, 26, 13);
-    glPopMatrix();
-
-    glPushMatrix();
-        glTranslatef(point.x, 1.0f, point.z);
-        glRotatef(90, 1.0f, 0.0f, 0.0f);
-        gluDisk(pObj, 0.0f, 1.3f, 26, 13);
-    glPopMatrix();
-
-    glPushMatrix();
-        glTranslatef(point.x, 1.0f, point.z);
-        glRotatef(90, 1.0f, 0.0f, 0.0f);
-        gluCylinder(pObj, 1.0f, 1.0f, 1.7f, 26, 13);
-    glPopMatrix();
-}
-
-// Wall
+// Parallelepiped
 void DrawParallelepiped(Point3D point1, Point3D point2){
-    glColor3f(1.0f, 1.0f, 1.0f); 
     glBegin(GL_QUADS);
     // FRONT
 	glVertex3f(point1.x, point1.y, point2.z);
@@ -140,6 +110,84 @@ void DrawParallelepiped(Point3D point1, Point3D point2){
     glEnd();
 }
 
+// Floor
+void DrawFloor(GLfloat height, GLfloat widht1, GLfloat widht2, Color color){
+    glColor3f(color.r, color.g, color.b); 
+
+    Point3D floor1;
+    floor1.x = height;
+    floor1.y = widht1;
+    floor1.z = height;
+    
+    Point3D floor2;
+    floor2.x = -height;
+    floor2.y = widht2;
+    floor2.z = -height;
+
+    DrawParallelepiped(floor1, floor2);
+}
+
+// Tower
+void DrawTower(GLUquadricObj *pObj, Point3D point){
+    glColor3f(1.0f, 1.0f, 1.0f); 
+    glPushMatrix();
+        glTranslatef(point.x, 1.0f, point.z);
+        glRotatef(90, 1.0f, 0.0f, 0.0f);
+        gluCylinder(pObj, 1.0f, 1.0f, 1.7f, 26, 13);
+    glPopMatrix();
+
+    glPushMatrix();
+        glTranslatef(point.x, 1.0f, point.z);
+        glRotatef(90, 1.0f, 0.0f, 0.0f);
+        gluDisk(pObj, 0.0f, 1.3f, 26, 13);
+    glPopMatrix();
+
+    glPushMatrix();
+        glTranslatef(point.x, 1.7f, point.z);
+        glRotatef(90, 1.0f, 0.0f, 0.0f);
+        gluCylinder(pObj, 1.3f, 1.3f, 0.7f, 26, 13);
+    glPopMatrix();
+
+    glColor3f(1.0f, 0.0f, 0.0f); 
+     glPushMatrix();
+        glTranslatef(point.x, 1.7f, point.z);
+        glRotatef(-90, 1.0f, 0.0f, 0.0f);
+        gluCylinder(pObj, 1.3f, 0.0f, 1.3f, 26, 13);
+    glPopMatrix();
+}
+
+// Tree
+void DrawTree(GLUquadricObj *pObj, Point3D point){
+    GLfloat height1 = point.y / 4.0;
+    GLfloat height2 = (point.y - height1) / 2.0;
+
+    // Stem
+    glColor3f(0.38, 0.231, 0.086);
+    glPushMatrix();
+        glTranslatef(point.x, 0.75, point.z);
+        glRotatef(90, 1.0f, 0.0f, 0.0f);
+        gluCylinder(pObj, 0.1f, 0.1f, height1, 26, 13);
+    glPopMatrix();
+
+    // Sheets
+    glColor3f(0.047f, 0.682f, 0.357f);
+    glPushMatrix();
+        glTranslatef(point.x, (0.75 + height1), point.z);
+        glRotatef(90, 1.0f, 0.0f, 0.0f);
+        gluCylinder(pObj, 0.0f, 0.5f, height2, 26, 13);
+    glPopMatrix();
+
+    glPushMatrix();
+        glTranslatef(point.x, (0.75 + 2 * height1), point.z);
+        glRotatef(90, 1.0f, 0.0f, 0.0f);
+        gluCylinder(pObj, 0.0f, 0.4f, height2, 26, 13);
+    glPopMatrix();
+}
+
+// Wall
+
+
+
 // Scene
 void RenderScene(void){
     GLUquadricObj *pObj;
@@ -148,7 +196,7 @@ void RenderScene(void){
 
     glPushMatrix();
 
-    glTranslatef(0.0f, -1.0f, -5.0f);  
+    glTranslatef(0.0f, -1.0f, -18.0f);  
 	glRotatef(yRot, 0.0f, 1.0f, 0.0f);
     glRotatef(zRot, 1.0f, 0.0f, 0.0f);
 
@@ -156,59 +204,105 @@ void RenderScene(void){
     pObj = gluNewQuadric();  
 	gluQuadricNormals(pObj, GLU_SMOOTH);  
 
-    Point3D pointTower1;
-    pointTower1.x = -2.3f;
-    pointTower1.y = 0.0f;
-    pointTower1.z = 0.0f;
-    DrawTower(pObj, pointTower1);
+    // glColor3f(1.0f, 1.0f, 1.0f); 
+
+    // Point3D pointTower1;
+    // pointTower1.x = -2.3f;
+    // pointTower1.y = 0.0f;
+    // pointTower1.z = 0.0f;
+    // DrawTower(pObj, pointTower1);
     
-    Point3D pointWallA1;
-    pointWallA1.x = -1.5f;
-    pointWallA1.y = -0.7f;
-    pointWallA1.z = -0.5f;
+    // // Wall A
+    // Point3D pointWallA1;
+    // pointWallA1.x = -1.5f;
+    // pointWallA1.y = -0.7f;
+    // pointWallA1.z = -0.5f;
     
-    Point3D pointWallA2;
-    pointWallA2.x = 1.5f;
-    pointWallA2.y = 0.3f;
-    pointWallA2.z = 0.5f;
+    // Point3D pointWallA2;
+    // pointWallA2.x = 1.5f;
+    // pointWallA2.y = 0.1f;
+    // pointWallA2.z = 0.5f;
 
-    DrawParallelepiped(pointWallA1, pointWallA2);
+    // DrawParallelepiped(pointWallA1, pointWallA2);
 
-    Point3D pointTower2;
-    pointTower2.x = 2.3f;
-    pointTower2.y = 0.0f;
-    pointTower2.z = 0.0f;
-    DrawTower(pObj, pointTower2);
+    // Point3D pointTower2;
+    // pointTower2.x = 2.3f;
+    // pointTower2.y = 0.0f;
+    // pointTower2.z = 0.0f;
+    // DrawTower(pObj, pointTower2);
 
-    Point3D pointWallB1;
-    pointWallB1.x = 1.8f;
-    pointWallB1.y = -0.7f;
-    pointWallB1.z = 0.8f;
+    // // Wall B
+    // Point3D pointWallB1;
+    // pointWallB1.x = 1.8f;
+    // pointWallB1.y = -0.7f;
+    // pointWallB1.z = 0.8f;
     
-    Point3D pointWallB2;
-    pointWallB2.x = 3.0f;
-    pointWallB2.y = 0.3f;
-    pointWallB2.z = 3.8f;
-    DrawParallelepiped(pointWallB1, pointWallB2);
+    // Point3D pointWallB2;
+    // pointWallB2.x = 3.0f;
+    // pointWallB2.y = 0.1f;
+    // pointWallB2.z = 3.8f;
+    // DrawParallelepiped(pointWallB1, pointWallB2);
 
-    Point3D pointTower3;
-    pointTower3.x = 2.3f;
-    pointTower3.y = 0.0f;
-    pointTower3.z = 4.0f;
-    DrawTower(pObj, pointTower3);
+    // Point3D pointTower3;
+    // pointTower3.x = 2.3f;
+    // pointTower3.y = 0.0f;
+    // pointTower3.z = 4.0f;
+    // DrawTower(pObj, pointTower3);
 
-    Point3D pointWallC1;
-    pointWallC1.x = -1.5f;
-    pointWallC1.y = -0.7f;
-    pointWallC1.z = 3.3f;
+    // // Wall C
+    // Point3D pointWallC1;
+    // pointWallC1.x = -1.5f;
+    // pointWallC1.y = -0.7f;
+    // pointWallC1.z = 3.5f;
     
-    Point3D pointWallC2;
-    pointWallC2.x = 1.5f;
-    pointWallC2.y = 0.3f;
-    pointWallC2.z = 4.3f;
+    // Point3D pointWallC2;
+    // pointWallC2.x = 1.5f;
+    // pointWallC2.y = 0.1f;
+    // pointWallC2.z = 4.5f;
 
-    DrawParallelepiped(pointWallC1, pointWallC2);
+    // DrawParallelepiped(pointWallC1, pointWallC2);
         
+    // // Draw Parallelepiped Tower
+    // Point3D pointTower4A;
+    // pointTower4A.x = -1.45f;
+    // pointTower4A.y = -0.7f;
+    // pointTower4A.z = 3.0f;
+
+    // Point3D pointTower4B;
+    // pointTower4B.x = -3.15f;
+    // pointTower4B.y = 2.3f;
+    // pointTower4B.z = 5.0f;
+
+    // DrawParallelepiped(pointTower4A, pointTower4B);
+
+    // // Wall D
+    // Point3D pointWallD1;
+    // pointWallD1.x = -1.8f;
+    // pointWallD1.y = -0.7f;
+    // pointWallD1.z = 0.8f;
+    
+    // Point3D pointWallD2;
+    // pointWallD2.x = -3.0f;
+    // pointWallD2.y = 0.1f;
+    // pointWallD2.z = 3.8f;
+    // DrawParallelepiped(pointWallD1, pointWallD2);
+
+    // Floor
+    Color colorFloor;
+    colorFloor.r = 0.204f;
+    colorFloor.g = 0.549f;
+    colorFloor.b = 0.192f;
+
+    DrawFloor(6.0f, 0.0f, 0.25f, colorFloor);
+
+    // Tree
+    Point3D pointTree;
+    pointTree.x = 0.0f;
+    pointTree.y = 2.0f;
+    pointTree.z = 0.0f;
+    DrawTree(pObj, pointTree);
+
+
     glPopMatrix();
     // Estudar
     glutSwapBuffers();
