@@ -163,6 +163,22 @@ void DrawHead(GLUquadricObj *pObj, Point3D point, GLfloat radius, GLfloat height
 }
 
 // Chest
+void DrawChest(GLUquadricObj *pObj, Point3D point, GLfloat radius1, GLfloat radius2, GLfloat height){
+    GLfloat heightFifth = height/4.0;
+    height -= heightFifth;
+
+    glPushMatrix();
+        glTranslatef(point.x, point.y, point.z);
+        glRotatef(-90, 1.0, 0.0, 0.0);
+        gluCylinder(pObj, radius1, radius2, height, 26, 13);
+    glPopMatrix();
+
+    glPushMatrix();
+        glTranslatef(point.x, point.y + height, point.z);
+        glRotatef(-90, 1.0, 0.0, 0.0);
+        gluCylinder(pObj, radius2, radius2/3.0, heightFifth, 26, 13);
+    glPopMatrix();
+}
 
 // Hand
 void DrawHand(GLUquadricObj *pObj, Point3D point, GLfloat radius, GLfloat radiusMiddle, GLfloat height){
@@ -247,9 +263,9 @@ void RenderScene(void){
     Point3D pointArm;
     pointArm.x = 0.0f;
     pointArm.y = 0.0f;
-    pointArm.z = 1.0f;
+    pointArm.z = 0.0f;
 
-    DrawLeg(pObj, pointArm, 0.25f, 1.0f);
+    DrawChest(pObj, pointArm, 0.7, 1.0, 2.0);
 
    glPopMatrix();
     // Estudar
