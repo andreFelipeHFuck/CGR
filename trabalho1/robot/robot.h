@@ -19,6 +19,5 @@ void DrawHead(GLUquadricObj *pObj, Point3D point, GLfloat radius, GLfloat height
 void DrawChest(GLUquadricObj *pObj, Point3D point, GLfloat radius1, GLfloat radius2, GLfloat height);
 void DrawArm(GLUquadricObj *pObj, Point3D point, GLfloat radius, GLfloat height);
 void DrawHand(GLUquadricObj *pObj, Point3D point, GLfloat radius, GLfloat radiusMiddle, GLfloat height);
-
-
+void DrawFoot(GLUquadricObj *pObj, Point3D point, GLfloat radius, GLfloat height);
 void DrawLeg(GLUquadricObj *pObj, Point3D point, GLfloat radius, GLfloat height);
