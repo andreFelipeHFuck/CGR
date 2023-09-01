@@ -157,11 +157,37 @@ void DrawFloor(GLfloat height, GLfloat widht1, GLfloat widht2, Color color){
     DrawParallelepiped(floor1, floor2);
 }
 
+// Ellipse
+void DrawEllipse(GLfloat x, GLfloat y, GLfloat z, GLfloat StAngle, GLfloat EndAngle, GLfloat RX, GLfloat RY){
+    GLdouble i;
+
+    glBegin(GL_LINE_STRIP);
+    i = StAngle;
+    while (i <= EndAngle)
+    {
+        glVertex3f((RX * cos(i) + y) + .5, (RY * sin(i) + x) + .5, z);
+        i += .001;
+    }
+    
+    glEnd();
+}
+
+void myEllipse(GLfloat x, GLfloat y, GLfloat z){
+
+    for(float i = 0; i < 360; i=i+0.1){
+        x = sin(i);
+        y = cos(i);
+        glVertex3f(x,y,z);
+    }   
+
+}
+
 // Head
 void DrawHead(GLUquadricObj *pObj, Point3D point, GLfloat radius, GLfloat height){
   GLfloat heightQuarter = height/4.0;
   GLfloat radius1 = radius / 5.0;
   GLfloat radius2 = radius / 10.0;
+  GLfloat radius3 = radius / 4.0;
   GLfloat height1 = height / 2.0;
   height -= heightQuarter;
 
@@ -170,22 +196,34 @@ void DrawHead(GLUquadricObj *pObj, Point3D point, GLfloat radius, GLfloat height
     glRotatef(-90, 1.0, 0.0, 0.0);
     gluCylinder(pObj, radius, radius, height, 26, 13);
 
-    glTranslatef(point.x, point.y, point.z + height);
+    glTranslatef(0.0, 0.0, height);
     glPushMatrix();
         gluSphere(pObj, radius, 26, 13);
 
-        glTranslatef(point.x, point.y, point.z +  radius1);
+        // Eyes
+        glPushMatrix();
+            glRotatef(-90, 1.0, 0.0, 0.0);
+            glTranslatef(0.0, 0.0, - 1.3*radius);
+            gluCylinder(pObj, radius / 2.0, radius / 2.0, height, 26, 13);
+        glPopMatrix();
+
+        // Antenna
+        glTranslatef(0.0, 0.0, radius1);
         glPushMatrix();
             gluCylinder(pObj, radius1, radius1, height1, 26, 13);
         glPopMatrix();
 
-        glTranslatef(point.x, point.y, point.z +  radius1);
+        glTranslatef(0.0, 0.0, radius1);
         glPushMatrix();
             gluCylinder(pObj, radius2, radius2, height, 26, 13);
         glPopMatrix();
+
+        glTranslatef(0.0, 0.0, 1.5 * height1);
+        glPushMatrix();
+            gluSphere(pObj,radius3, 26, 13);
+        glPopMatrix();
     glPopMatrix();
 
-    
   glPopMatrix();
 }
 
@@ -197,11 +235,19 @@ void DrawChest(GLUquadricObj *pObj, Point3D point, GLfloat radius1, GLfloat radi
     glPushMatrix();
         glTranslatef(point.x, point.y, point.z);
         glRotatef(-90, 1.0, 0.0, 0.0);
-        gluCylinder(pObj, radius1, radius2, height, 26, 13);
 
-        glTranslatef(point.x, point.y, point.z + height);
         glPushMatrix();
-            gluCylinder(pObj, radius2, radius2/3.0, heightFifth, 26, 13);
+            gluCylinder(pObj, radius1, radius2, height, 26, 13);
+
+            glPushMatrix(); 
+                glRotatef(-180, 1.0, 0.0, 0.0);
+                gluDisk(pObj, 0.0, radius1, 26, 13);
+            glPopMatrix();
+
+            glPushMatrix();
+                glTranslatef(0.0, 0.0, height);
+                gluCylinder(pObj, radius2, radius2/3.0, heightFifth, 26, 13);
+            glPopMatrix();
         glPopMatrix();
     glPopMatrix();
 
@@ -210,47 +256,41 @@ void DrawChest(GLUquadricObj *pObj, Point3D point, GLfloat radius1, GLfloat radi
 
 // Hand
 void DrawHand(GLUquadricObj *pObj, Point3D point, GLfloat radius, GLfloat radiusMiddle, GLfloat height){
-    glTranslatef(point.x , point.y, point.z + height / 3.0);
-    //glRotatef(-90, 0.0, 1.0, 0.0);
+    glTranslatef(0.0, 0.0, height / 3.0);
     gluCylinder(pObj, 0.0f, radius/1.2, height, 26, 13);
    
-    glTranslatef(point.x , point.y, point.z + height);
-    //glRotated(180, 0.0, 1.0, 0.0);
+    glTranslatef(0.0, 0.0, height);
     gluDisk(pObj, 0.0f, radius/1.2, 26, 13);       
 }
 
 // Arm
-void DrawArm(GLUquadricObj *pObj, Point3D point, GLfloat radius, GLfloat height){
+void DrawArm(GLUquadricObj *pObj, Point3D point, GLfloat radius, GLfloat height, int side){
     GLfloat radiusMiddle = radius/2.0;
     GLfloat radiusSphere = (radius * 0.25);
     GLfloat heightQuater = height/4.0;
 
     glPushMatrix();
-        glTranslatef(point.x, point.y, point.z);
-        glRotatef(-90, 0.0, 1.0, 0.0);
-
-        gluSphere(pObj, radius - radiusSphere, 26, 13);
-
-
-        GLfloat pointZ1 = point.z + radiusMiddle;
-        glTranslatef (point.x , point.y, pointZ1);
+         glTranslatef(point.x, point.y, point.z);
+         glRotatef(side, 0.0, 1.0, 0.0);
 
         glPushMatrix();
-            gluCylinder(pObj, radiusMiddle, radiusMiddle, height, 26, 13);
+            gluSphere(pObj, radius, 26, 13);
 
-            glTranslatef(point.x, point.y, pointZ1 + radiusMiddle);
+            glTranslatef (0.0 , 0.0, radiusMiddle);
+
             glPushMatrix();
-                gluCylinder(pObj, radiusMiddle, radiusMiddle, height, 26, 13);  
-                DrawHand(pObj, point, radius, radiusMiddle, height);
-            glPopMatrix();
+                gluCylinder(pObj, radiusMiddle, radiusMiddle, height, 26, 13);
 
+                glTranslatef(0.0, 0.0, radiusMiddle);
+                glPushMatrix();
+                    gluCylinder(pObj, radiusMiddle, radiusMiddle, height, 26, 13);  
+                    DrawHand(pObj, point, radius, radiusMiddle, height);
+                glPopMatrix();
+
+            glPopMatrix();
         glPopMatrix();
     glPopMatrix();
 
-}
-
-// Foot
-void DrawFoot(GLUquadricObj *pObj, Point3D point, GLfloat radius, GLfloat height){
 }
 
 // Leg
@@ -263,12 +303,11 @@ void DrawLeg(GLUquadricObj *pObj, Point3D point, GLfloat radius, GLfloat height)
         glRotatef(-90, 1.0, 0.0, 0.0);
         gluCylinder(pObj, radiusMiddle, radiusMiddle, height, 26, 13);
 
-        glTranslatef(point.x, point.y, point.z - height);
+        glTranslatef(0.0, 0.0, point.z - height);
 
         glPushMatrix();
             gluCylinder(pObj, radiusMiddle, radiusMiddle, height, 26, 13);
             
-
             glPushMatrix();
                 gluCylinder(pObj, radius, radiusMiddle, heightQuater, 26, 13);
             glPopMatrix();
@@ -276,6 +315,7 @@ void DrawLeg(GLUquadricObj *pObj, Point3D point, GLfloat radius, GLfloat height)
     glPopMatrix();
 }
 
+void DrawRobot(GLUquadricObj *pObj, Point3D point, GLfloat height);
 
 // Scene
 void RenderScene(void){
@@ -285,7 +325,7 @@ void RenderScene(void){
 
     glPushMatrix();
 
-    glTranslatef(0.0f, -1.0f, -18.0f);  
+    glTranslatef(0.0f, -1.0f, -25.0f);  
 	glRotatef(yRot, 0.0f, 1.0f, 0.0f);
     glRotatef(zRot, 1.0f, 0.0f, 0.0f);
 
@@ -293,13 +333,54 @@ void RenderScene(void){
     pObj = gluNewQuadric();  
 	gluQuadricNormals(pObj, GLU_SMOOTH);
 
-    // Arm 
-    Point3D pointArm;
-    pointArm.x = 0.0f;
-    pointArm.y = 0.0f;
-    pointArm.z = 0.0f;
+    glColor3f(1.0, 1.0, 1.0);
+    // Head
+    Point3D pointHead;
+    pointHead.x = 0.0f;
+    pointHead.y = 5.5f;
+    pointHead.z = 0.0f;
 
-    DrawHead(pObj, pointArm, 0.7, 1.5);
+    DrawHead(pObj, pointHead, 0.7, 1.5);
+
+    // Chest
+    Point3D pointChest;
+    pointChest.x = 0.0f;
+    pointChest.y = 3.0f;
+    pointChest.z = 0.0f;
+
+    DrawChest(pObj, pointChest, 0.8, 1.5, 2.9);
+
+    // Arm 1
+    Point3D pointArm1;
+    pointArm1.x = 1.5f;
+    pointArm1.y = 5.0f;
+    pointArm1.z = 0.0f;
+
+    DrawArm(pObj, pointArm1, 0.4, 2.5, 90);
+
+     // Arm 2
+    Point3D pointArm2;
+    pointArm2.x = -1.5f;
+    pointArm2.y = 5.0f;
+    pointArm2.z = 0.0f;
+
+    DrawArm(pObj, pointArm2, 0.4, 2.5, -90);
+
+    // Leg 1
+    Point3D pointLeg1;
+    pointLeg1.x = -0.4;
+    pointLeg1.y = 1.5;
+    pointLeg1.z = 0.0;
+
+    DrawLeg(pObj, pointLeg1, 0.5, 2.0);
+
+    // Leg 2
+    Point3D pointLeg2;
+    pointLeg2.x = 0.4;
+    pointLeg2.y = 1.5;
+    pointLeg2.z = 0.0;
+
+     DrawLeg(pObj, pointLeg2, 0.5, 2.0);
 
    glPopMatrix();
     // Estudar
