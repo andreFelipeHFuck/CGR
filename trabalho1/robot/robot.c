@@ -202,9 +202,15 @@ void DrawHead(GLUquadricObj *pObj, Point3D point, GLfloat radius, GLfloat height
 
         // Eyes
         glPushMatrix();
-            glRotatef(-90, 1.0, 0.0, 0.0);
+            glRotatef(90, 1.0, 0.0, 0.0);
             glTranslatef(0.0, 0.0, - 1.3*radius);
             gluCylinder(pObj, radius / 2.0, radius / 2.0, height, 26, 13);
+        glPopMatrix();
+
+        glPushMatrix();
+                glTranslated(0.0, radius / 2.0, 0.0);
+                glRotatef(-90, 1.0, 0.0, 0.0);
+                gluDisk(pObj, 0.0f, radius / 2.0, 26, 13);       
         glPopMatrix();
 
         // Antenna
@@ -256,11 +262,39 @@ void DrawChest(GLUquadricObj *pObj, Point3D point, GLfloat radius1, GLfloat radi
 
 // Hand
 void DrawHand(GLUquadricObj *pObj, Point3D point, GLfloat radius, GLfloat radiusMiddle, GLfloat height){
+    GLfloat radiusQuater = radius / 4.0;
+    GLfloat heightFinger = height / 5.0;
+
     glTranslatef(0.0, 0.0, height / 3.0);
     gluCylinder(pObj, 0.0f, radius/1.2, height, 26, 13);
    
     glTranslatef(0.0, 0.0, height);
-    gluDisk(pObj, 0.0f, radius/1.2, 26, 13);       
+    gluDisk(pObj, 0.0f, radius/1.2, 26, 13);
+
+    glPushMatrix();
+        glTranslatef(radius/1.7, 0.0, 0.0);
+        gluCylinder(pObj, radiusQuater, radiusQuater, heightFinger, 26, 13);
+
+        glTranslatef(0.0, 0.0, heightFinger);
+        gluDisk(pObj, 0.0f, radiusQuater, 26, 13);
+    glPopMatrix();
+
+    glPushMatrix();
+        glTranslatef(-radius/1.7, 0.0, 0.0);
+        gluCylinder(pObj, radiusQuater, radiusQuater, heightFinger, 26, 13);
+
+        glTranslatef(0.0, 0.0, heightFinger);
+        gluDisk(pObj, 0.0f, radiusQuater, 26, 13);
+    glPopMatrix();
+
+     glPushMatrix();
+        glTranslatef(0.0, radius/1.7, 0.0);
+        gluCylinder(pObj, radiusQuater, radiusQuater, heightFinger, 26, 13);
+
+        glTranslatef(0.0, 0.0, heightFinger);
+        gluDisk(pObj, 0.0f, radiusQuater, 26, 13);
+    glPopMatrix();
+
 }
 
 // Arm
