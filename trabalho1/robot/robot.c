@@ -192,6 +192,8 @@ void DrawHead(GLUquadricObj *pObj, Point3D point, GLfloat radius, GLfloat height
   height -= heightQuarter;
 
   glPushMatrix();
+    glColor3f(0.753, 0.753, 0.753);
+
     glTranslatef(point.x, point.y, point.z);
     glRotatef(-90, 1.0, 0.0, 0.0);
     gluCylinder(pObj, radius, radius, height, 26, 13);
@@ -208,12 +210,14 @@ void DrawHead(GLUquadricObj *pObj, Point3D point, GLfloat radius, GLfloat height
         glPopMatrix();
 
         glPushMatrix();
-                glTranslated(0.0, radius / 2.0, 0.0);
+                glColor3f(0.969, 0.051, 0.102);
+                glTranslated(0.0, 1.0 * radius, 0.0);
                 glRotatef(-90, 1.0, 0.0, 0.0);
                 gluDisk(pObj, 0.0f, radius / 2.0, 26, 13);       
         glPopMatrix();
 
         // Antenna
+        glColor3f(0.753, 0.753, 0.753);
         glTranslatef(0.0, 0.0, radius1);
         glPushMatrix();
             gluCylinder(pObj, radius1, radius1, height1, 26, 13);
@@ -226,6 +230,7 @@ void DrawHead(GLUquadricObj *pObj, Point3D point, GLfloat radius, GLfloat height
 
         glTranslatef(0.0, 0.0, 1.5 * height1);
         glPushMatrix();
+            glColor3f(1.0, 0.0, 0.0);
             gluSphere(pObj,radius3, 26, 13);
         glPopMatrix();
     glPopMatrix();
@@ -239,6 +244,8 @@ void DrawChest(GLUquadricObj *pObj, Point3D point, GLfloat radius1, GLfloat radi
     height -= heightFifth;
 
     glPushMatrix();
+        glColor3f(0.753, 0.753, 0.753);
+
         glTranslatef(point.x, point.y, point.z);
         glRotatef(-90, 1.0, 0.0, 0.0);
 
@@ -304,6 +311,8 @@ void DrawArm(GLUquadricObj *pObj, Point3D point, GLfloat radius, GLfloat height,
     GLfloat heightQuater = height/4.0;
 
     glPushMatrix();
+        glColor3f(0.753, 0.753, 0.753);
+
          glTranslatef(point.x, point.y, point.z);
          glRotatef(side, 0.0, 1.0, 0.0);
 
@@ -333,6 +342,8 @@ void DrawLeg(GLUquadricObj *pObj, Point3D point, GLfloat radius, GLfloat height)
     GLfloat heightQuater = height/4.0;
 
     glPushMatrix();
+        glColor3f(0.753, 0.753, 0.753);
+
         glTranslatef (point.x, point.y, point.z);
         glRotatef(-90, 1.0, 0.0, 0.0);
         gluCylinder(pObj, radiusMiddle, radiusMiddle, height, 26, 13);
