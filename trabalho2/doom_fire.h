@@ -3,7 +3,7 @@
 #include <unistd.h>
 
 #define ESCAPE 27
-#define NUM_PARTICLES 10000
+#define NUM_PARTICLES 100000
 #define GRAVITY 0.0003
 
 struct color {
@@ -13,6 +13,7 @@ struct color {
 struct s_pf {
   float x, y,veloc_x, veloc_y;
   unsigned lifetime;
+  int lifetime_Y, lifetime_R1, lifetime_R2;
   struct color color;
 } particles[NUM_PARTICLES];
 

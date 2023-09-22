@@ -6,7 +6,7 @@ int window;
 
 // Criar particulas
 void CreateParticle(int pos){
-    float max = 1.0;
+    float max = 4.0;
     float veloc_al = 0.1;
 
     particles[pos].x = ((float)rand()/(float)(RAND_MAX)) * max;
@@ -16,6 +16,10 @@ void CreateParticle(int pos){
     particles[pos].veloc_y = ((float)rand()/(float)(RAND_MAX)) * veloc_al;
 
     particles[pos].lifetime = rand() % 100;
+
+    particles[pos].lifetime_Y = (10 * particles[pos].lifetime) / 10;
+    particles[pos].lifetime_R1 = (5 * particles[pos].lifetime) / 10;
+    particles[pos].lifetime_R2 = (4 * particles[pos].lifetime) / 10;
 }
 
 // Initialize the firework
@@ -64,6 +68,16 @@ void ReSizeGLScene(int Width, int Height)
   glMatrixMode(GL_MODELVIEW);
 }
 
+/*Define color by lifetime*/
+void ParticleColor(int pos){
+    if(particles[pos].lifetime > particles[pos].lifetime_Y)
+      glColor3f(0.98f, 0.753f, 0.0f);
+    else if(particles[pos].lifetime < particles[pos].lifetime_Y && particles[pos].lifetime > particles[pos].lifetime_R1)
+      glColor3f(0.988f, 0.392f, 0.0f);
+    else
+      glColor3f(0.714f, 0.133f, 0.012f);
+}
+
 /* The main drawing function. */
 void DrawGLScene()
 {
@@ -83,6 +97,7 @@ void DrawGLScene()
       particles[i].y += particles[i].veloc_y;
 
       particles[i].lifetime--;
+      ParticleColor(i);
 
       glVertex3f(particles[i].x, particles[i].y, 0.0f);
     }else{
