@@ -6,20 +6,22 @@ int window;
 
 // Criar particulas
 void CreateParticle(int pos){
-    float max = 4.0;
+    float max = 1.0;
+    float min = -1.0;
     float veloc_al = 0.1;
 
-    particles[pos].x = ((float)rand()/(float)(RAND_MAX)) * max;
+    particles[pos].x = ((float)rand()/(float)(RAND_MAX)) * (max - min) + min;
     particles[pos].y = -3;  
 
-    particles[pos].veloc_x = 0.1;
+    particles[pos].veloc_x = 0.01;
     particles[pos].veloc_y = ((float)rand()/(float)(RAND_MAX)) * veloc_al;
 
-    particles[pos].lifetime = rand() % 100;
+    particles[pos].lifetime = rand() % 50;
 
-    particles[pos].lifetime_Y = (10 * particles[pos].lifetime) / 10;
-    particles[pos].lifetime_R1 = (5 * particles[pos].lifetime) / 10;
-    particles[pos].lifetime_R2 = (4 * particles[pos].lifetime) / 10;
+    particles[pos].lifetime_Y1 = (7 * particles[pos].lifetime) / 10;
+    particles[pos].lifetime_Y2 = (7 * particles[pos].lifetime) / 10;
+    particles[pos].lifetime_R1 = (2 * particles[pos].lifetime) / 10;
+    particles[pos].lifetime_R2 = (2 * particles[pos].lifetime) / 10;
 }
 
 // Initialize the firework
@@ -70,9 +72,10 @@ void ReSizeGLScene(int Width, int Height)
 
 /*Define color by lifetime*/
 void ParticleColor(int pos){
-    if(particles[pos].lifetime > particles[pos].lifetime_Y)
-      glColor3f(0.98f, 0.753f, 0.0f);
-    else if(particles[pos].lifetime < particles[pos].lifetime_Y && particles[pos].lifetime > particles[pos].lifetime_R1)
+    if(particles[pos].lifetime > particles[pos].lifetime_Y1)
+      glColor3f(1.0f, 0.996f, 0.298f);
+      //glColor3f(0.98f, 0.753f, 0.0f);
+    else if(particles[pos].lifetime < particles[pos].lifetime_Y1 && particles[pos].lifetime > particles[pos].lifetime_R1)
       glColor3f(0.988f, 0.392f, 0.0f);
     else
       glColor3f(0.714f, 0.133f, 0.012f);
@@ -93,7 +96,7 @@ void DrawGLScene()
       ative_particles++;
       particles[i].veloc_y -= GRAVITY;
 
-      particles[i].x += pow(-1, rand() % 5) * particles[i].veloc_x;
+      particles[i].x += pow(-1, rand() % 10) * particles[i].veloc_x;
       particles[i].y += particles[i].veloc_y;
 
       particles[i].lifetime--;
@@ -131,7 +134,7 @@ int main(int argc, char **argv)
   glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_ALPHA | GLUT_DEPTH);  
   glutInitWindowSize(640, 480);  
   glutInitWindowPosition(0, 0);  
-  window = glutCreateWindow("Fogos de artificio");  
+  window = glutCreateWindow("Fogos");  
   glutDisplayFunc(&DrawGLScene);  
   glutFullScreen();
   glutIdleFunc(&DrawGLScene);
