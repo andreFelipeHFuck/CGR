@@ -8,15 +8,19 @@ int window;
 void CreateParticle(int pos){
     float max = 1.0;
     float min = -1.0;
-    float veloc_al = 0.1;
+
+    int lifetime_max = 50;
+    int lifetime_min = 20;
+
+    float veloc_al = 0.05;
 
     particles[pos].x = ((float)rand()/(float)(RAND_MAX)) * (max - min) + min;
-    particles[pos].y = -3;  
+    particles[pos].y = 0;  
 
     particles[pos].veloc_x = 0.01;
     particles[pos].veloc_y = ((float)rand()/(float)(RAND_MAX)) * veloc_al;
 
-    particles[pos].lifetime = rand() % 50;
+    particles[pos].lifetime = lifetime_min + rand() % (lifetime_max - lifetime_min);
 
     particles[pos].lifetime_Y1 = (7 * particles[pos].lifetime) / 10;
     particles[pos].lifetime_Y2 = (7 * particles[pos].lifetime) / 10;
@@ -94,8 +98,6 @@ void DrawGLScene()
   for(i=0;i<NUM_PARTICLES;i++) {
     if(particles[i].lifetime) {
       ative_particles++;
-      particles[i].veloc_y -= GRAVITY;
-
       particles[i].x += pow(-1, rand() % 10) * particles[i].veloc_x;
       particles[i].y += particles[i].veloc_y;
 

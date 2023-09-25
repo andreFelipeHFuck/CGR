@@ -4,7 +4,6 @@
 
 #define ESCAPE 27
 #define NUM_PARTICLES 150000
-#define GRAVITY 0.0003
 
 struct color {
   float r, g, b;
