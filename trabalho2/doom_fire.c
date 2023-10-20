@@ -6,11 +6,11 @@ int window;
 
 // Criar particulas
 void CreateParticle(int pos){
-    float max = 1.0;
-    float min = -1.0;
+    float max = 0.5;
+    float min = -0.5;
 
-    int lifetime_max = 50;
-    int lifetime_min = 20;
+    int lifetime_max = 40;
+    int lifetime_min = 10;
 
     float veloc_al = 0.05;
 
