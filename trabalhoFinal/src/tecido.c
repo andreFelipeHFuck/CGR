@@ -108,7 +108,55 @@ void addLimitacaoTecido(Tecido *t, Particula *p1, Particula *p2){
 void printTecido(Tecido *t){
     for(int i=0; i<t->num_particulas_largura; i++){
         for(int j=0; j<t->num_particulas_comprimento; j++){
-            printParticula(t->particulas[j * t->num_particulas_largura + i]);
+            printParticula(&t->particulas[j * t->num_particulas_largura + i]);
+        }
+    }
+}
+
+void addForcasDoVentoPorTriangulo(Particula *p1, Particula *p2, Particula *p3, Vec3 direcao){
+    Vec3 normal = calTrianguloNormal(p1, p2, p3);
+    Vec3 d = normalizar(normal);
+    Vec3 forca = multiplicacaoVec3(normal, pontoVec3(d, direcao));
+    addForcaParticula(p1, forca);
+    addForcaParticula(p2, forca);
+    addForcaParticula(p3, forca);
+}
+
+void timeStepTecido(Tecido *t){
+    for(int i=0; i<LIMITE_INTERACAO; i++){
+        for(int j=0; j< t->limitacoes->qtd; j++){    
+            satisfazRestricao(&t->limitacoes->elem[j]);
+        }
+    }
+
+    for(int i=0; i<t->num_particulas; i++){
+        timeStepParticula(&t->particulas[i]);
+    }
+}
+
+void addForcaTecido(Tecido *t, Vec3 direcao){
+    for(int i=0; i<t->num_particulas; i++){
+        addForcaParticula(&t->particulas[i], direcao);
+    }
+}
+
+void forcaVentoTecido(Tecido *t, Vec3 direcao){
+    printf("Força do Vento\n");
+    for(int i=0; i<t->num_particulas_largura-1; i++){
+        for(int j=0; j<t->num_particulas_comprimento; j++){
+            addForcasDoVentoPorTriangulo(
+                getParticula(t, i+1, j),
+                getParticula(t, i, j),
+                getParticula(t, i, j+1),
+                direcao
+            );
+            
+            addForcasDoVentoPorTriangulo(
+                getParticula(t, i+1, j+1),
+                getParticula(t, i+1, j),
+                getParticula(t, i, j+1),
+                direcao
+            );
         }
     }
 }
@@ -148,6 +196,15 @@ void desenhaTrianguloTecido(Particula *p1, Particula *p2, Particula *p3, Color c
 void resetaNormalTecido(Tecido *t){
     for(int i=0; i<t->num_particulas; i++)
       resetNormalParticula(&t->particulas[i]);
+}
+
+void colisaoBolaTecido(Tecido *t, Vec3 center, GLfloat radius){
+    for(int i=0; i<t->num_particulas; i++){
+        Vec3 v = subtracaoVec3(getPosParticula(&t->particulas[i]), center);
+        float l = comprimento(v);
+        if(comprimento(v) < radius)
+            desvioPosParticula(&t->particulas[i], multiplicacaoVec3(normalizar(v), (radius-l)));
+    }
 }
 
 void desenhaShadedTecido(Tecido *t){
@@ -201,6 +258,13 @@ void desenhaShadedTecido(Tecido *t){
 }
 
 
-// int main(){
-//     Tecido *tecido = criaTecido(14, 10, 55, 45);
-// }
+int main(){
+    Tecido *tecido = criaTecido(14, 10, 55, 45);
+
+   while (1)
+   {
+    forcaVentoTecido(tecido, multiplicacaoVec3(criaVec3(0, -0.2, 0), TEMPO_ESCALONADO));
+   }
+   
+   
+}

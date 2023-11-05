@@ -14,9 +14,9 @@ Particula criaParticula(Vec3 pos){
     return novo;
 }
 
-void printParticula(Particula p){
+void printParticula(Particula *p){
     printf("Pos: ");
-    printVec3(p.pos);
+    printVec3(p->pos);
 
     // printf("\nPos antiga: ");
     // printVec3(p.pos_antiga);
@@ -98,12 +98,20 @@ void imovelParticula(Particula *p){
 // Limitacao
 Limitacao criaLimitacao(Particula *p1, Particula *p2){
     Limitacao novo;
-    novo.p1 = p1;
+
+     novo.p1 = p1;
     novo.p2 = p2;
 
     Vec3 vec = subtracaoVec3(getPosParticula(p1), getPosParticula(p2));
     novo.distancia_descanso = comprimento(vec);
 
+    return novo;
+}
+
+void printfLimitacao(Limitacao *l){
+    printf("%f\n", l->distancia_descanso);
+    printParticula(l->p1);
+    printParticula(l->p2);
 }
 
 Particula* getP1Limitacao(Limitacao *l){
@@ -137,6 +145,8 @@ Limitacoes *criaLimitacoes(){
     
     novo->qtd = 0;
     novo->elem = NULL;
+
+    return novo;
 }
 
 void addLimitacoa(Limitacoes *limitacoes, Limitacao limitacao){
@@ -153,16 +163,16 @@ Limitacoes *destroiLimitacoes(Limitacoes *l){
 }
 
 // int main(){
-//     Vec3 pos = criaVec3(1, 2, 3);
-//     Particula p = criaParticula(pos);
+//     Particula p1 = criaParticula(criaVec3(1, 2, 3));
+//     Particula p2 = criaParticula(criaVec3(2, 2, 3));
 
-//     printParticula(p);
+//     Limitacao limitacao = criaLimitacao(&p1, &p2);
 
-//     addForcaParticula(&p, criaVec3(1, 2, 3));
+//     Limitacoes *limitacoes = criaLimitacoes();
 
-//     printParticula(p);
+//     addLimitacoa(limitacoes, limitacao);
 
-//     timeStepParticula(&p);
-//     printParticula(p);
-
+//     for(int i=0; i<limitacoes->qtd; i++){
+//         satisfazRestricao(&limitacoes->elem[i]);
+//     }
 // }

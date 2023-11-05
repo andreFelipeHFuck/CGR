@@ -15,8 +15,12 @@ Particula* getParticula(Tecido *t, int x, int y);
 void addLimitacaoTecido(Tecido *t, Particula *p1, Particula *p2);
 void printTecido(Tecido *t);
 Vec3 calTrianguloNormal(Particula *p1, Particula *p2, Particula *p3);
-void addForcasDoVentoTriangulo(Particula *p1, Particula *p2, Particula *p3, Vec3 direcao);
+void addForcasDoVentoPorTriangulo(Particula *p1, Particula *p2, Particula *p3, Vec3 direcao);
+void timeStepTecido(Tecido *t);
+void addForcaTecido(Tecido *t, Vec3 direcao);
+void forcaVentoTecido(Tecido *t, Vec3 direcao);
 void desenhaTrianguloTecido(Particula *p1, Particula *p2, Particula *p3, Color color);
+void colisaoBolaTecido(Tecido *t, Vec3 center, GLfloat radius);
 void desenhaShadedTecido(Tecido *t);
 
 

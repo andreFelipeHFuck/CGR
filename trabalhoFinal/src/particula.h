@@ -33,7 +33,7 @@ typedef struct limitacoes
 
 // Particula
 Particula criaParticula(Vec3 pos);
-void printParticula(Particula p);
+void printParticula(Particula *p);
 Vec3 getPosParticula(Particula *p);
 void setPosParticule(Particula *p, Vec3 v);
 Vec3 getNormalParticula(Particula *p);

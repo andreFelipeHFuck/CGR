@@ -1,6 +1,9 @@
 #include "src/tecido.h"
 
 Tecido *tecido;
+Vec3 posicao_bola;
+GLfloat raio_bola = 2;
+
 
 static GLfloat yRot = 0.0f;
 static GLfloat zRot = 0.0f;
@@ -72,9 +75,17 @@ void SpecialKeys(int key, int x, int y){
     glutPostRedisplay();  
 }
 
+GLfloat tempo_bola = 0;
+
 // Scene
 void RenderScene(void){
-    tecido = criaTecido(14, 10, 55, 45);
+    //posicao_bola =  criaVec3(7, -5, 0);
+    tecido = criaTecido(7, 4, 10, 20);
+
+    addForcaTecido(tecido, multiplicacaoVec3(criaVec3(0, -0.2, 0), TEMPO_ESCALONADO));
+    forcaVentoTecido(tecido, multiplicacaoVec3(criaVec3(0, -0.2, 0), TEMPO_ESCALONADO));
+    //timeStepTecido(tecido);
+
     GLUquadricObj *pObj;
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);  
@@ -86,22 +97,14 @@ void RenderScene(void){
     glRotatef(zRot, 1.0f, 0.0f, 0.0f);
 
 
-    pObj = gluNewQuadric();  
-	gluQuadricNormals(pObj, GLU_SMOOTH);  
-
-     // Floor
-    Color colorFloor;
-    colorFloor.r = 1.0;
-    colorFloor.g = 0.0;
-    colorFloor.b = 0.0;
-
-    //DrawFloor(10.0f, 0.0f, 0.25f, colorFloor);
+    // pObj = gluNewQuadric();  
+	// gluQuadricNormals(pObj, GLU_SMOOTH);  
    
     desenhaShadedTecido(tecido);
      
     glPopMatrix();
-    // Estudar
     glutSwapBuffers();
+    glutPostRedisplay();
 }
 
 int main(int argc, char *argv[]){
