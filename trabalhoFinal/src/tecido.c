@@ -117,6 +117,7 @@ void addForcasDoVentoPorTriangulo(Particula *p1, Particula *p2, Particula *p3, V
     Vec3 normal = calTrianguloNormal(p1, p2, p3);
     Vec3 d = normalizar(normal);
     Vec3 forca = multiplicacaoVec3(normal, pontoVec3(d, direcao));
+
     addForcaParticula(p1, forca);
     addForcaParticula(p2, forca);
     addForcaParticula(p3, forca);
@@ -141,9 +142,9 @@ void addForcaTecido(Tecido *t, Vec3 direcao){
 }
 
 void forcaVentoTecido(Tecido *t, Vec3 direcao){
-    printf("Força do Vento\n");
+    
     for(int i=0; i<t->num_particulas_largura-1; i++){
-        for(int j=0; j<t->num_particulas_comprimento; j++){
+        for(int j=0; j<t->num_particulas_comprimento-1; j++){
             addForcasDoVentoPorTriangulo(
                 getParticula(t, i+1, j),
                 getParticula(t, i, j),
@@ -258,13 +259,13 @@ void desenhaShadedTecido(Tecido *t){
 }
 
 
-int main(){
-    Tecido *tecido = criaTecido(14, 10, 55, 45);
+// int main(){
+//     Tecido *tecido = criaTecido(14, 10, 55, 45);
 
-   while (1)
-   {
-    forcaVentoTecido(tecido, multiplicacaoVec3(criaVec3(0, -0.2, 0), TEMPO_ESCALONADO));
-   }
+// //    while (1)
+// //    {
+// //     forcaVentoTecido(tecido, multiplicacaoVec3(criaVec3(0, -0.2, 0), TEMPO_ESCALONADO));
+// //    }
    
    
-}
+// }

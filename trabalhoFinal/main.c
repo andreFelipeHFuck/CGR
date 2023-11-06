@@ -4,7 +4,6 @@ Tecido *tecido;
 Vec3 posicao_bola;
 GLfloat raio_bola = 2;
 
-
 static GLfloat yRot = 0.0f;
 static GLfloat zRot = 0.0f;
 
@@ -79,12 +78,15 @@ GLfloat tempo_bola = 0;
 
 // Scene
 void RenderScene(void){
-    //posicao_bola =  criaVec3(7, -5, 0);
-    tecido = criaTecido(7, 4, 10, 20);
+    posicao_bola =  criaVec3(7, -5, 0);
 
-    addForcaTecido(tecido, multiplicacaoVec3(criaVec3(0, -0.2, 0), TEMPO_ESCALONADO));
-    forcaVentoTecido(tecido, multiplicacaoVec3(criaVec3(0, -0.2, 0), TEMPO_ESCALONADO));
-    //timeStepTecido(tecido);
+    tempo_bola++;
+    posicao_bola.z = cos(tempo_bola/50.0) * 7;
+
+   addForcaTecido(tecido, multiplicacaoVec3(criaVec3(0, -0.2, 0), TEMPO_ESCALONADO));
+   forcaVentoTecido(tecido, multiplicacaoVec3(criaVec3(0, -1.5, 0), TEMPO_ESCALONADO));
+   timeStepTecido(tecido);
+   colisaoBolaTecido(tecido, posicao_bola, raio_bola);
 
     GLUquadricObj *pObj;
 
@@ -100,7 +102,15 @@ void RenderScene(void){
     // pObj = gluNewQuadric();  
 	// gluQuadricNormals(pObj, GLU_SMOOTH);  
    
+    glTranslatef(-6.5,6,-9.0f); // move ca
+	glRotatef(25,0,1,0);
     desenhaShadedTecido(tecido);
+
+    glPushMatrix();
+    glTranslatef(posicao_bola.x, posicao_bola.y, posicao_bola.z);
+    glColor3f(0.4f, 0.8f, 0.5f);
+    glutSolidSphere(raio_bola-0.1, 50, 50);
+    glPopMatrix();
      
     glPopMatrix();
     glutSwapBuffers();
@@ -108,6 +118,8 @@ void RenderScene(void){
 }
 
 int main(int argc, char *argv[]){
+    tecido = criaTecido(14, 10, 55, 45);
+
     glutInit(&argc, argv);  
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);  
     glutInitWindowSize(800, 600);  
